@@ -13,14 +13,19 @@
 </head>
 <body>
     <div class="m-2 p-2 flex flex-row space-x-2 bg-indigo-100">
-        <input type="number" id="sepal_lenght" min="0" max="100" step=0.2>
-        <input type="number" id="sepal_width"  min="0" max="100" step=0.2>
-        <input type="number" id="petal_length" min="0" max="100" step=0.2>
-        <input type="number" id="petal_width"  min="0" max="100" step=0.2>
-        <input type="number" id="aa" min="0" max="100" step=0.2>
-        <input type="number" id="bb"  min="0" max="100" step=0.2>
-        <input type="number" id="cc" min="0" max="100" step=0.2>
-        <input type="number" id="dd"  min="0" max="100" step=0.2>
+        <input type="number" id="input_1" min="0" max="100" step=0.2>
+        <input type="number" id="input_2"  min="0" max="100" step=0.2>
+        <input type="number" id="input_3" min="0" max="100" step=0.2>
+        <input type="number" id="input_4"  min="0" max="100" step=0.2>
+        <input type="number" id="input_5" min="0" max="100" step=0.2>
+        <input type="number" id="input_6"  min="0" max="100" step=0.2>
+        <input type="number" id="input_7" min="0" max="100" step=0.2>
+        <input type="number" id="input_8"  min="0" max="100" step=0.2>
+        <input type="number" id="input_9" min="0" max="100" step=0.2>
+        <input type="number" id="input_10"  min="0" max="100" step=0.2>
+        <input type="number" id="input_11" min="0" max="100" step=0.2>
+        <input type="number" id="input_12"  min="0" max="100" step=0.2>
+        <input type="number" id="input_13"  min="0" max="100" step=0.2>
 
 
         <div id="predict-post-btn" class="flex bg-gray-900 hover:bg-gray-400 text-white py-2 px-2 font-medium cursor-pointer">Predict Post</div>
@@ -33,14 +38,34 @@
   <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById("predict-post-btn").addEventListener("click", function() {
-                const sepal_lenght = document.getElementById("sepal_lenght").value;
-                const sepal_width = document.getElementById("sepal_width").value;
-                const petal_length = document.getElementById("petal_length").value;
-                const petal_width = document.getElementById("petal_width").value;
-                const data = { "sepal_length": sepal_lenght,
-                                "sepal_width": sepal_width, 
-                                "petal_length": petal_length,
-                                "petal_width": petal_width
+                const input_1 = document.getElementById("input_1").value;
+                const input_2 = document.getElementById("input_2").value;
+                const input_3 = document.getElementById("input_3").value;
+                const input_4 = document.getElementById("input_4").value;
+                const input_5 = document.getElementById("input_5").value;
+                const input_6 = document.getElementById("input_6").value;
+                const input_7 = document.getElementById("input_7").value;
+                const input_8 = document.getElementById("input_8").value;
+                const input_9 = document.getElementById("input_9").value;
+                const input_10 = document.getElementById("input_10").value;
+                const input_11 = document.getElementById("input_11").value;
+                const input_12 = document.getElementById("input_12").value;
+                const input_13 = document.getElementById("input_13").value;
+
+                const data = { 
+                                "input_1": input_1,
+                                "input_2": input_2, 
+                                "input_3": input_3,
+                                "input_4": input_4,
+                                "input_5": input_5,
+                                "input_6": input_6, 
+                                "input_7": input_7,
+                                "input_8": input_8,
+                                "input_9": input_9,
+                                "input_10": input_10, 
+                                "input_11": input_11,
+                                "input_12": input_12,
+                                "input_13": input_13
                             };
 
                 fetch('/predict', {

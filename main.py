@@ -4,14 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from typing import Optional, List
+import uvicorn
 
 import numpy as np
 import pandas as pd
 import json
-import joblib
 
-# Variabili globali
-loaded_model = None
+from model import InputModel, loaded_model
+
 
 # CORS Support
 origins = [
@@ -37,32 +37,17 @@ templates = Jinja2Templates(directory="templates")
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request" : request})
 
-@app.on_event("startup")
-async def startup_event():
-    print("Start")
-    # caricamento modelli
-    # load all stuff
-    global loaded_model
-    loaded_model = joblib.load('BostonClassifier.pkl')
+# @app.on_event("startup")
+# async def startup_event():
+#     print("Start")
+#     # caricamento modelli
+#     # load all stuff
+#     global loaded_model
 
 async def shutdon_envent():
     print("Shutdown")
 
-class InputModel(BaseModel):
-    input_1: float
-    input_2: float
-    input_3: float
-    input_4: float
-    input_5: float
-    input_6: float
-    input_7: float
-    input_8: float
-    input_9: float
-    input_10: float
-    input_11: float
-    input_12: float
-    input_13: float
-    startDatetime:  Optional[float] =  None
+
 
 @app.post('/predict',response_class=JSONResponse )
 def predict_species(input_: InputModel):
@@ -77,3 +62,6 @@ def predict_species(input_: InputModel):
                         'prediction': prediction[0],
                         #'probability': probability
                         })
+
+if __name__ == '__main__':
+	uvicorn.run(app,host="127.0.0.1",port=8000)

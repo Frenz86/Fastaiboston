@@ -2,20 +2,34 @@ import joblib
 from pydantic import BaseModel
 from typing import Optional
 
-loaded_model = joblib.load('BostonClassifier.pkl')
+model = joblib.load('BostonClassifier.pkl')
 
-class InputModel(BaseModel):
-    input_1: float
-    input_2: float
-    input_3: float
-    input_4: float
-    input_5: float
-    input_6: float
-    input_7: float
-    input_8: float
-    input_9: float
-    input_10: float
-    input_11: float
-    input_12: float
-    input_13: float
-    startDatetime:  Optional[float] =  None
+class Feature_type(BaseModel):
+    input_1: float =2.1
+    input_2: float =2.1
+    input_3: float =2.1
+    input_4: float =2.1
+    input_5: float =2.1
+    input_6: float =2.1
+    input_7: float =2.1
+    input_8: float =2.1
+    input_9: float =2.1
+    input_10: float =2.1
+    input_11: float =2.1
+    input_12: float =2.1
+    input_13: float =2.1 
+    #startDatetime:  Optional[float] =  None
+
+    # CRIM: float
+    # ZN: float
+    # INDUS: float
+    # CHAS: float
+    # NOX: float
+    # RM: float
+    # AGE: float
+    # DIS: float
+    # RAD: float
+    # TAX: float
+    # PTRATIO: float
+    # B: float
+    # LSTAT: float

@@ -1,24 +1,19 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse,JSONResponse
+from fastapi import FastAPI,Request,Depends
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
-from typing import Optional, List
 import uvicorn
-
-import numpy as np
 import pandas as pd
+from model import Feature_type, model
 import json
-
-from model import InputModel, loaded_model
 
 
 # CORS Support
-origins = [
-    f'http://0.0.0.0:8008',
-    f'http://localhost:8008',
-    #f'http://localhost:8080',
-]
+origins = [f'http://0.0.0.0:8000',
+           f'http://localhost:8000',
+          #f'http://localhost:8080',
+            ]
+
 
 app = FastAPI()
 
@@ -33,35 +28,51 @@ app.add_middleware(CORSMiddleware,
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
-@app.get("/test", response_class=HTMLResponse)
-async def home(request: Request):
+def link():
+    return{"-->        http://localhost:8000/docs   http://localhost:8000/html            <-----"}
+
+
+@app.get("/html", response_class=HTMLResponse)
+async def html(request: Request):
     return templates.TemplateResponse("index.html", {"request" : request})
 
-# @app.on_event("startup")
-# async def startup_event():
-#     print("Start")
-#     # caricamento modelli
-#     # load all stuff
-#     global loaded_model
+@app.get("/predict")
+async def predict_get(data: Feature_type= Depends()):              # input nel corpo
+    try:
+        data = pd.DataFrame(data)
+        data = data.T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:]
+        predictions = model.predict(data)
+        return {'prediction': predictions[0]}
+    except:
+        return {"prediction": "there was an error"} 
 
-async def shutdon_envent():
-    print("Shutdown")
+@app.post('/predict')
+async def predict_post(data: Feature_type):
+    try:
+        data = pd.DataFrame(data)
+        data = data.T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:]
+        predictions = model.predict(data)
+        return {"prediction": predictions[0]}
+    except:
+        return {"prediction": "there was an error"} 
+
+@app.put('/predict')
+async def predict_put(data: Feature_type):
+    try:
+        data = pd.DataFrame(data)
+        data = data.T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:]
+        predictions = model.predict(data)
+        return {"prediction": predictions[0]}
+    except:
+        return {"prediction": "there was an error"} 
 
 
 
-@app.post('/predict',response_class=JSONResponse )
-def predict_species(input_: InputModel):
-    data = input_.dict()
-    data_in = [[data['input_1'], data['input_2'], data['input_3'], data['input_4'],
-                data['input_5'], data['input_6'], data['input_7'], data['input_8'],
-                data['input_9'], data['input_10'], data['input_11'], data['input_12'],data['input_13']]]
-    
-    prediction = loaded_model.predict(data_in)
-    #probability = loaded_model.predict_proba(data_in).max()
-    return json.dumps({
-                        'prediction': prediction[0],
-                        #'probability': probability
-                        })
-
-if __name__ == '__main__':
-	uvicorn.run(app,host="127.0.0.1",port=8000)
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
